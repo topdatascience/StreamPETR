@@ -155,7 +155,7 @@ model = dict(
 
 
 dataset_type = 'CustomNuScenesDataset'
-data_root = './data/nuscenes/'
+data_root = './v1.0-mini/'
 
 file_client_args = dict(backend='disk')
 
