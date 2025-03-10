@@ -1,0 +1,2 @@
+recursive-include projects/configs *.py
+recursive-include projects/configs *.yaml
