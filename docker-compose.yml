@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  module:
+    image: ghcr.io/topdatascience/foxy-cuda-streampetr:latest
+    build:
+      context: .
+      dockerfile: foxy-cuda.Dockerfile
+      args:
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
+    volumes:
+      - /tmp/.X11-unix/:/tmp/.X11-unix/
+      - ./models:/root/models
+      - ./result:/root/result
+      - ./data:/root/data
+    runtime: nvidia
+    privileged: true
+    device_cgroup_rules:
+      - 'c 189:* rmw'
+    entrypoint: python3
+    stdin_open: true
+    tty: true
+    network_mode: "host"
+    command: tools/create_data_nusc.py --root-path data/nuscenes --out-dir data/nuscenes --version v1.0-mini
