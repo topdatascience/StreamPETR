@@ -253,7 +253,7 @@ def main():
             mmcv.dump(outputs['bbox_results'], args.out)
         kwargs = {} if args.eval_options is None else args.eval_options
         kwargs["jsonfile_prefix"] = osp.join(
-            "test",
+            "result",
             args.config.split("/")[-1].split(".")[-2],
             time.ctime().replace(" ", "_").replace(":", "_"),
         )
