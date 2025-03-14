@@ -16,11 +16,14 @@ services:
     privileged: true
     device_cgroup_rules:
       - 'c 189:* rmw'
-    entrypoint: python3
+    entrypoint: bash
     stdin_open: true
     tty: true
     network_mode: "host"
     ipc: "host"
     #command: tools/create_data_nusc.py --root-path data/nuscenes --out-dir data/nuscenes --version v1.0-mini
     #command: tools/test.py /usr/local/lib/python3.8/dist-packages/projects/configs/RepDETR3D/repdetr3d_eva02_800_bs2_seq_24e.py models/repdetr3d_eva02_800_bs2_seq_24e.pth --format-only
-    command: tools/visualize.py --out_dir result/ --result_json result/repdetr3d_eva02_800_bs2_seq_24e/Fri_Mar_14_08_01_50_2025/pts_bbox/results_nusc --dataroot data/nuscenes --version v1.0-mini
+    #command: tools/visualize.py --out_dir result/ --result_json result/repdetr3d_eva02_800_bs2_seq_24e/Fri_Mar_14_08_01_50_2025/pts_bbox/results_nusc --dataroot data/nuscenes --version v1.0-mini
+    command: ./create_nuscenes.sh
+    #command: ./process_nuscenes.sh
+    #command: ./visualize_nuscenes.sh

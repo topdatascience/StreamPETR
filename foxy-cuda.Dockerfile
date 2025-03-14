@@ -162,11 +162,21 @@ RUN pip3 install numpy==1.23.5
 
 ARG GITHUB_TOKEN
 
-RUN pip3 install projects@git+https://${GITHUB_TOKEN}@github.com/topdatascience/StreamPETR@nuscnes_minival
-
-
 WORKDIR /root/
 
-COPY tools tools
+RUN pip3 install projects@git+https://${GITHUB_TOKEN}@github.com/topdatascience/StreamPETR@nuscnes_minival
 
+COPY tools tools
+COPY create_nuscenes.sh create_nuscenes.sh
+COPY visualize_nuscenes.sh visualize_nuscenes.sh
+COPY process_nuscenes.sh process_nuscenes.sh
+
+# Set up ROS workspace
+RUN rm -rf /root/ros2_ws/ && mkdir -p /root/ros2_ws/src \
+  && cd /root/ros2_ws/src \
+  && git clone -b launch_file https://oauth2:${GITHUB_TOKEN}@github.com/topdatascience/streampetr_ros.git \
+  && cd /root/ros2_ws \
+  && /bin/bash -c "colcon build --symlink-install && source install/local_setup.bash" \
+  && echo "source /root/ros2_ws/install/local_setup.bash" >> /root/.bashrc
+  
 ENTRYPOINT ["/bin/bash"]
