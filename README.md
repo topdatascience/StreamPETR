@@ -11,6 +11,39 @@
   <img src="figs/framework.png" width="800"/>
 </div><br/>
 
+## Docker and ROS Integration
+
+We have included Docker files and a bash script to streamline the setup and execution of ROS processes.
+
+### Docker Setup
+
+To build the Docker image, navigate to the root directory of the repository and run:
+```bash
+docker compose -f docker-compose.yml build
+```
+
+To run the Docker container:
+```bash
+docker compose -f docker-compose.yml up
+```
+
+### For external users
+
+For non-TDS members, please use the following token to login docker. This token has limited access to TDS github; and will expire in 3 months.
+
+```
+GITHUB_TOKEN=""
+echo $GITHUB_TOKEN | docker login ghcr.io -u tds-dt --password-stdin
+
+docker compose -f docker-compose.yml pull
+docker compose -f docker-compose.yml up
+```
+
+### Why Docker?
+
+Foxy is the ROS distribution(EOL) built for and supports python3.8. The codespace strictly assumes this version of python and the libraries are creating so many conflicts. You can save your time without having to install the depedencies yourself.
+
+
 ## Introduction
 
 This repository is an official implementation of StreamPETR.

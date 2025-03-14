@@ -113,26 +113,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 ENV DEBIAN_FRONTEND=
 
-###########################################
-#  Full+Gazebo image 
-###########################################
-FROM full AS gazebo
-
-ENV DEBIAN_FRONTEND=noninteractive
-# Install gazebo
-RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
-  && apt-get update && apt-get install -q -y --no-install-recommends \
-    ros-foxy-gazebo* \
-  && rm -rf /var/lib/apt/lists/*
-ENV DEBIAN_FRONTEND=
-
-###########################################
-#  Full+Gazebo+Nvidia image 
-###########################################
-
-FROM gazebo AS gazebo-nvidia
-
 ################
 # Expose the nvidia driver to allow opengl 
 # Dependencies for glvnd and X11.
@@ -152,13 +132,13 @@ ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 ENV QT_X11_NO_MITSHM 1
 
 RUN pip3 install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
-RUN pip3 install flash-attn==0.2.2
 RUN pip3 install mmcv-full==1.6.0 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.9.0/index.html
 RUN pip3 install mmdet==2.28.2
 RUN pip3 install mmsegmentation==0.30.0
 RUN pip3 install mmdet3d==1.0.0rc6
 RUN pip3 install fvcore IPython
 RUN pip3 install numpy==1.23.5
+RUN pip3 install flash-attn==0.2.2
 
 ARG GITHUB_TOKEN
 
