@@ -150,6 +150,7 @@ COPY tools tools
 COPY create_nuscenes.sh create_nuscenes.sh
 COPY visualize_nuscenes.sh visualize_nuscenes.sh
 COPY process_nuscenes.sh process_nuscenes.sh
+COPY projects/configs/RepDETR3D/repdetr3d_eva02_800_bs2_seq_24e.py /usr/local/lib/python3.8/dist-packages/projects/configs/RepDETR3D/repdetr3d_eva02_800_bs2_seq_24e.py
 
 # Set up ROS workspace
 RUN rm -rf /root/ros2_ws/ && mkdir -p /root/ros2_ws/src \

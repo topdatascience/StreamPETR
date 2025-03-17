@@ -32,7 +32,7 @@ docker compose -f docker-compose.yml up
 For non-TDS members, please use the following token to login docker. This token has limited access to TDS github; and will expire in 3 months.
 
 ```
-GITHUB_TOKEN=""
+GITHUB_TOKEN="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"
 echo $GITHUB_TOKEN | docker login ghcr.io -u tds-dt --password-stdin
 
 docker compose -f docker-compose.yml pull
@@ -43,6 +43,36 @@ docker compose -f docker-compose.yml up
 
 Foxy is the ROS distribution(EOL) built for and supports python3.8. The codespace strictly assumes this version of python and the libraries are creating so many conflicts. You can save your time without having to install the depedencies yourself.
 
+## Dataset & Config Instructions
+
+This repository currently focuses on only NuScenes dataset structure. Please first download NuScenes v1.0-mini version from [nuscenes](https://www.nuscenes.org/nuscenes#download) and extract it to the `data/nuscenes` folder. Please also download the model by using `download.sh` in the `models`folder.
+
+### Bash Scripts for NuScenes Dataset
+
+There are several bash scripts provided to help you manage the NuScenes dataset:
+
+#### create_nuscenes.sh
+
+This script is used to create the necessary directory structure for the NuScenes dataset and download the required files. After you run this command, you should see `nuscenes2d_temporal_infos_val.pkl` and `nuscenes2d_temporal_infos_train.pk` in the `data/nuscenes` folder.
+
+#### process_nuscenes.sh
+
+This script processes the exported data, e.g. `nuscenes2d_temporal_infos_val.pkl`, and runs the inference using the model. If it runs successfully, you will see a json file in a directory similar to `result/repdetr3d_eva02_800_bs2_seq_24e/Fri_Mar_14_12_12_55_2025/pts_bbox/results_nusc.json`.
+
+#### visualize_nuscenes.sh
+
+This script provides visualization tools to help you inspect the NuScenes dataset and verify the correctness of the data processing steps.
+
+To use these scripts, edit `docker-compose.yml` entry command and run them as follows:
+```bash
+bash create_nuscenes.sh
+bash process_nuscenes.sh
+bash visualize_nuscenes.sh --result_json result/../../results_nusc
+```
+
+### Custom Config
+
+In this repository, the model was chosen according to the mAP score on the nuscenes validation dataset. If you want to use your own dataset, it'd be easier to convert your dataset into nuscenes format first as the dataset builder will fetch and consume extrinsic parameters while preparing the items. Please take a look at `projects/configs/RepDETR3D/repdetr3d_eva02_800_bs2_seq_24e.py` to see `point_cloud_range`, `voxel_size`, and `data_root`. 
 
 ## Introduction
 
